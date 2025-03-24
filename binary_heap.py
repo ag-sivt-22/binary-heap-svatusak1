@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 from typing import Any, Iterator
 
+
 @dataclass
 class Element:
     value: Any
     priority: int
  
     def __iter__(self) -> Iterator[Any | int]:
-        yield self.value
-        yield self.priority
+        return iter([self.value, self.priority])
 
 class BinaryHeap:
 
@@ -42,20 +42,22 @@ class BinaryHeap:
 
     def _repair_heap_top_down(self, index: int = 0) -> None:
         child: int = index * 2
-        if child > len(self.heap) - 1 or len(self.heap) <= 1:
+        if child > len(self.heap) - 1 or not self.heap:
             return
+
+        if child + 1 < len(self.heap):
+            if self.heap[child].priority > self.heap[child+1].priority:
+                child += 1
+
         if self.heap[child].priority < self.heap[index].priority:
             self.heap[child], self.heap[index] = self.heap[index], self.heap[child]
             self._repair_heap_top_down(child)
-            return
-        if child + 1 > len(self.heap) - 1:
-            return
-        if self.heap[child+1].priority < self.heap[index].priority:
-            self.heap[child+1], self.heap[index] = self.heap[index], self.heap[child+1]
-            self._repair_heap_top_down(child+1)
 
     def head(self):
         if not self.heap:
             raise Exception("Heap is empty")
         return self.heap[0]
         
+e = Element("ahoj", 1)
+for i in e:
+    print(i)
