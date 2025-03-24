@@ -28,8 +28,8 @@ class BinaryHeap:
             self._repair_heap_bottom_up(parent)
 
     def pop(self) -> Element:
-        if len(self.heap) <= 0:
-            raise Exception("heap empty")
+        if not self.heap:
+            raise Exception("Heap is empty")
         elif len(self.heap) == 1:
             return self.heap.pop()
 
